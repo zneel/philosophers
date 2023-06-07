@@ -6,6 +6,19 @@ SRC=	src/main.c \
 		src/helpers.c
 OBJ=$(SRC:.c=.o)
 INCLUDE=-Iinclude
+
+ifeq ($(SAN),1)
+	CFLAGS += -fsanitize=address 
+endif
+
+ifeq ($(DEV),1)
+	CFLAGS += -fsanitize=address -g3 
+endif
+
+ifeq ($(DEBUG),1)
+	CFLAGS += -g3 
+endif
+
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/07 12:22:55 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/07 12:36:21 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ typedef struct s_philo
 	struct s_tphilo	**philosophers;
 }					t_philo;
 
-void	destroy_philosophers(t_philo *philo, int count);
-int	alloc_philo(t_philo *philo);
+void				destroy_philosophers(t_tphilo **philos, int count);
+int					alloc_philo(t_philo *philo);
+void				exit_philosophers(t_philo *philo);
 
-void	print_usage(void);
-void	debug_philo(t_philo *philo);
+void				print_usage(void);
+void				debug_philo(t_philo *philo);
 
 #endif

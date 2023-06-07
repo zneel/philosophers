@@ -6,20 +6,20 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/07 12:22:45 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/07 12:36:36 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	destroy_philosophers(t_philo *philo, int count)
+void	destroy_philosophers(t_tphilo **philos, int count)
 {
 	int	i;
 
 	i = 0;
 	while (i < count)
-		free(philo->philosophers[i++]);
-	free(philo->philosophers);
+		free(philos[i++]);
+	free(philos);
 }
 
 int	alloc_philo(t_philo *philo)
@@ -44,8 +44,14 @@ int	alloc_philo(t_philo *philo)
 	}
 	if (err)
 	{
-		destroy_philosophers(philo, i);
+		destroy_philosophers(philo->philosophers, i);
 		return (0);
 	}
 	return (1);
+}
+
+void	exit_philosophers(t_philo *philo)
+{
+	destroy_philosophers(philo->philosophers, philo->count);
+	exit(0);
 }

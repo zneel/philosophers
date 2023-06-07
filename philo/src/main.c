@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:26:23 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/07 12:22:14 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/07 12:37:45 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	init_philo(t_philo *philo)
 	philo->philosophers = NULL;
 }
 
-
-
 void	parse_args(int ac, char **av, t_philo *philo)
 {
 	philo->count = atoi(av[1]);
@@ -33,8 +31,6 @@ void	parse_args(int ac, char **av, t_philo *philo)
 	if (ac > 5)
 		philo->must_eat_count = atoi(av[5]);
 }
-
-
 
 int	main(int ac, char **av)
 {
@@ -47,7 +43,9 @@ int	main(int ac, char **av)
 	}
 	init_philo(&philo);
 	parse_args(ac, av, &philo);
-	alloc_philo(&philo);
+	if (!alloc_philo(&philo))
+        return (1);
 	debug_philo(&philo);
+    exit_philosophers(&philo);
 	return (0);
 }
