@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:26:23 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:30:07 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:30:37 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	parse_args(int ac, char **av, t_sim *sim)
 int	main(int ac, char **av)
 {
 	t_sim	sim;
-	int		err;
-
+	
 	if (ac < 5 || ac > 6)
 	{
 		print_usage();
@@ -34,7 +33,6 @@ int	main(int ac, char **av)
 	}
 	init_simulation(&sim);
 	parse_args(ac, av, &sim);
-	err = simulate(&sim);
-	printf("err=%d\n", err);
+	simulate(&sim);
 	return (0);
 }

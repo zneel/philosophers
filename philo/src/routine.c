@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:30:30 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:28:12 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	*p_routine(void *data)
 
 	sim = ((t_philo *)data)->sim;
 	philo = ((t_philo *)data);
-	printf("starting routine:\n");
+	//printf("starting routine:\n");
 	while (!is_dead(sim, philo) && sim->end == 0)
 	{
-		debug_philo(philo);
-		debug_sim(sim);
+		//debug_philo(philo);
+		//debug_sim(sim);
 		p_eat(sim, philo);
 		p_think(sim, philo);
 		p_sleep(sim, philo);

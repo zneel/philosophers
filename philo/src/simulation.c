@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:49:46 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:15:01 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:33:35 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	simulate(t_sim *sim)
 	int	i;
 
 	i = 0;
-	debug_sim(sim);
 	alloc_philosophers(sim);
 	alloc_forks(sim);
 	init_forks(sim);

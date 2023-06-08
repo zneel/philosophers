@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:47:26 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:31:51 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:29:57 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	destroy_fork_mutex(pthread_mutex_t *forks, int count)
 
 int	alloc_forks(t_sim *sim)
 {
-	printf("allocating %d forks \n", sim->count);
 	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->count);
 	if (!sim->forks)
 		return (0);
