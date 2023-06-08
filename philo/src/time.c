@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:14:08 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 14:24:33 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:36:18 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long long	time_to_ms(t_timeval time)
 {
-	return (((long long)time.tv_sec) * 1000) + (time.tv_usec / 1000);
+	return ((((long long)time.tv_sec) * 1000) + (time.tv_usec / 1000));
 }
 
 long long	time_now(void)
