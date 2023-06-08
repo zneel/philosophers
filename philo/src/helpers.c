@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:22:03 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/07 12:22:32 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/07 15:11:03 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	print_usage(void)
 			TIME_TO_SLEEP,
 			MUST_EAT);
 }
-void	debug_philo(t_philo *philo)
+void	debug_sim(t_sim *sim)
 {
-	printf("philo->count=%d\n", philo->count);
-	printf("philo->time_to_die=%d\n", philo->time_to_die);
-	printf("philo->time_to_eat=%d\n", philo->time_to_eat);
-	printf("philo->time_to_sleep=%d\n", philo->time_to_sleep);
-	printf("philo->must_eat_count=%d\n", philo->must_eat_count);
+	printf("sim->count=%d\n", sim->count);
+	printf("sim->time_to_die=%d\n", sim->time_to_die);
+	printf("sim->time_to_eat=%d\n", sim->time_to_eat);
+	printf("sim->time_to_sleep=%d\n", sim->time_to_sleep);
+	printf("sim->must_eat_count=%d\n", sim->must_eat_count);
 }

@@ -6,46 +6,36 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:26:23 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/07 12:37:45 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 13:24:18 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_philo(t_philo *philo)
+void	parse_args(int ac, char **av, t_sim *sim)
 {
-	philo->count = 0;
-	philo->must_eat_count = -1;
-	philo->time_to_die = 0;
-	philo->time_to_eat = 0;
-	philo->time_to_sleep = 0;
-	philo->philosophers = NULL;
-}
-
-void	parse_args(int ac, char **av, t_philo *philo)
-{
-	philo->count = atoi(av[1]);
-	philo->time_to_die = atoi(av[2]);
-	philo->time_to_eat = atoi(av[3]);
-	philo->time_to_sleep = atoi(av[4]);
+	sim->count = atoi(av[1]);
+	sim->time_to_die = atoi(av[2]);
+	sim->time_to_eat = atoi(av[3]);
+	sim->time_to_sleep = atoi(av[4]);
 	if (ac > 5)
-		philo->must_eat_count = atoi(av[5]);
+		sim->must_eat_count = atoi(av[5]);
 }
 
 int	main(int ac, char **av)
 {
-	t_philo	philo;
+	t_sim	sim;
 
 	if (ac < 5 || ac > 6)
 	{
 		print_usage();
 		return (1);
 	}
-	init_philo(&philo);
-	parse_args(ac, av, &philo);
-	if (!alloc_philo(&philo))
+	init_simulation(&sim);
+	parse_args(ac, av, &sim);
+	debug_sim(&sim);
+	if (simulate(&sim) > 0)
         return (1);
-	debug_philo(&philo);
-    exit_philosophers(&philo);
+	exit_simulation(&sim);
 	return (0);
 }

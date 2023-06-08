@@ -3,7 +3,13 @@ CC=cc
 CFLAGS=-Wall -Wextra -Werror -pthread -MMD
 SRC=	src/main.c \
 		src/philosophers.c \
-		src/helpers.c
+		src/helpers.c \
+		src/forks.c \
+		src/simulation.c \
+		src/routine.c \
+		src/actions.c \
+		src/time.c 
+
 OBJ=$(SRC:.c=.o)
 INCLUDE=-Iinclude
 
