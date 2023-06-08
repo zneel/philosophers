@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:26:23 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 14:07:40 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:18:47 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int ac, char **av)
 		print_usage();
 		return (1);
 	}
+	init_simulation(&sim);
 	parse_args(ac, av, &sim);
     err = simulate(&sim);
     printf("err=%d\n", err);

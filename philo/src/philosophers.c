@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 14:12:25 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:29:09 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	is_dead(t_sim *sim, t_tphilo *philo)
 	long long	now;
 
 	now = time_now();
-	printf("time now=%lld\n", now);
 	if (time_diff_ms(philo->last_eat_at, now) >= sim->time_to_die)
 		philo->dead = 1;
 	return (philo->dead);
