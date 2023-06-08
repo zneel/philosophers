@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:49:46 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 13:24:24 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:00:47 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void	init_simulation(t_sim *sim)
 	pthread_mutex_init(&sim->sim, NULL);
 }
 
-void	exit_simulation(t_sim *sim)
+void	destroy_simulation(t_sim *sim)
 {
 	destroy_fork_mutex(sim->forks, sim->count);
 	destroy_forks(sim->forks, sim->count);
 	destroy_philosophers(sim->philosophers, sim->count);
+	pthread_mutex_destroy(&sim->sim);
 }
 
 int	simulate(t_sim *sim)
@@ -38,11 +39,14 @@ int	simulate(t_sim *sim)
 	int	i;
 
 	i = 0;
+	init_simulation(sim);
+	debug_sim(sim);
 	if (alloc_philosophers(sim) > 0 || init_philosophers(sim) > 0)
 		return (1);
 	if (alloc_forks(sim) > 0 || init_forks(sim) > 0)
 		return (1);
 	while (i < sim->count)
 		pthread_join(sim->philosophers[i++]->thread, NULL);
+	destroy_simulation(sim);
 	return (0);
 }

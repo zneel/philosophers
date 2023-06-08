@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 13:18:53 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 13:58:29 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int						init_philosophers(t_sim *sim);
 int						is_dead(t_sim *sim, t_tphilo *philo);
 
 void					init_simulation(t_sim *philo);
-void					exit_simulation(t_sim *philo);
+void					destroy_simulation(t_sim *philo);
 int						simulate(t_sim *sim);
 
 void					print_usage(void);

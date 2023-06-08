@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:47:26 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 13:21:08 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:02:28 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	alloc_forks(t_sim *sim)
 	err = 0;
 	sim->forks = malloc(sizeof(pthread_mutex_t *) * sim->count);
 	if (!sim->forks)
-		return (0);
+		return (1);
 	while (i < sim->count)
 	{
 		sim->forks[i] = malloc(sizeof(pthread_mutex_t));
@@ -87,15 +87,13 @@ int	init_forks(t_sim *sim)
 	int	err;
 
 	i = 0;
-	if (!alloc_forks(sim))
-		return (0);
     err = 0;
 	while (i < sim->count)
 	{
 		err = pthread_mutex_init(sim->forks[i], NULL);
 		if (err)
 		{
-			printf("Error initializing mutexes\n");
+			printf("Error initializing mutex\n");
             break ;
 		}
 		i++;

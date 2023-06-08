@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 13:14:54 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 13:53:37 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	*p_routine(void *args)
 	sim = ((t_args *)(args))->sim;
 	printf("starting routine:\n");
 	printf("sim->end=%d\n", sim->end);
+	printf("philo->id=%d\n", philo->id);
 	while (!is_dead(sim, philo) && sim->end == 0)
 	{
 		p_eat(sim, philo);

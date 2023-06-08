@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:47 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 12:42:39 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 13:28:32 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ int	p_dead(t_sim *sim, t_tphilo *philo)
 {
 	if (is_dead(sim, philo))
 	{
-        philo->state = DEAD;
-        philo->dead = 1;
-        printf(DIED, time_now(), philo->id);
-        while (!pthread_mutex_lock(&sim->sim))
-            ;
-        sim->end = 1;
-        while (!pthread_mutex_unlock(&sim->sim))
-            ;
-        exit(1);
-    }
+		philo->state = DEAD;
+		philo->dead = 1;
+		printf(DIED, time_now(), philo->id);
+		while (!pthread_mutex_lock(&sim->sim))
+			;
+		sim->end = 1;
+		while (!pthread_mutex_unlock(&sim->sim))
+			;
+		exit(1);
+	}
 	return (1);
 }
 

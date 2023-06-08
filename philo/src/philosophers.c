@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 13:22:09 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:12:25 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ int	init_philosophers(t_sim *sim)
 	{
 		args.philo = sim->philosophers[i];
 		args.sim = sim;
+		assign_philosophers(sim->philosophers[i], i);
 		sim->philosophers[i]->ret = pthread_create(
 			&sim->philosophers[i]->thread, NULL, &p_routine, &args);
 		if (sim->philosophers[i]->ret)
 		{
 			err = sim->philosophers[i]->ret;
-			printf("Error initializing threads\n");
+			printf("Error initializing thread\n");
 			break ;
 		}
 		i++;
