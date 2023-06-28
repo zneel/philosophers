@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:07:04 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:49:42 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 # define NUM_PHILO "number_of_philosophers"
 # define TIME_TO_DIE "time_to_die"
@@ -52,6 +53,8 @@ typedef struct s_philo
 	int					dead;
 	int					eaten_count;
 	t_sim				*sim;
+	pthread_mutex_t		mutex;
+	pthread_mutex_t		lock;
 	enum e_state		state;
 }						t_philo;
 
@@ -63,7 +66,7 @@ struct					s_sim
 	int					time_to_sleep;
 	int					must_eat_count;
 	pthread_mutex_t		sim;
-	pthread_mutex_t		fork;
+	pthread_mutex_t		print;
 	int					end;
 	long long			start_time;
 	t_philo				*philosophers;
@@ -87,6 +90,8 @@ int						simulate(t_sim *sim);
 void					print_usage(void);
 void					debug_sim(t_sim *sim);
 void					debug_philo(t_philo *philo);
+void					sim_print(t_sim *sim, char *data, int id);
+void					ft_swap(int *a, int *b);
 
 long long				time_to_ms(t_timeval time);
 long long				time_now(void);

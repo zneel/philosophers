@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 11:14:08 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:32 by ebouvier         ###   ########.fr       */
+/*   Created: 2023/06/09 00:13:53 by ebouvier          #+#    #+#             */
+/*   Updated: 2023/06/28 21:47:33 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	time_to_ms(t_timeval time)
+void	ft_swap(int *a, int *b)
 {
-	return ((((long long)time.tv_sec) * 1000) + (time.tv_usec / 1000));
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
-long long	time_now(void)
+void	sim_print(t_sim *sim, char *data, int id)
 {
-	t_timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time_to_ms(time));
-}
-
-long long	time_diff_ms(long long a, long long b)
-{
-	if (a > b)
-		return (a - b);
+	pthread_mutex_lock(&sim->sim);
+	if (!sim->end)
+	{
+		pthread_mutex_unlock(&sim->sim);
+		pthread_mutex_lock(&sim->print);
+		printf(data, time_diff_ms(sim->start_time, time_now()), id + 1);
+		pthread_mutex_unlock(&sim->print);
+	}
 	else
-		return (b - a);
-}
-
-int	sleep_ms(long long ms)
-{
-	usleep(ms * 1000);
-	return (1);
+	{
+		pthread_mutex_unlock(&sim->sim);
+	}
 }

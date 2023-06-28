@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:22:03 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 18:38:13 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/28 21:47:24 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_usage(void)
 {
 	printf("usage: ./philo %s %s %s %s %s\n", NUM_PHILO, TIME_TO_DIE,
-		TIME_TO_EAT, TIME_TO_SLEEP, MUST_EAT);
+			TIME_TO_EAT, TIME_TO_SLEEP, MUST_EAT);
 }
 
 void	debug_sim(t_sim *sim)
@@ -47,8 +47,6 @@ void	debug_philo(t_philo *philo)
 	printf("dead=%d\n", philo->dead);
 	printf("eaten_count=%d\n", philo->eaten_count);
 	printf("last_eat_at=%lld\n", philo->last_eat_at);
-	printf("ret=%d\n", philo->ret);
 	printf("state=%s\n", state_to_str(philo->state));
-	printf("thread=%p\n", &philo->thread);
 	printf("=========================\n");
 }

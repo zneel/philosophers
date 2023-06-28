@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:47:26 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/08 19:29:57 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/28 21:47:24 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,17 @@
  */
 int	pick_up_forks(t_sim *sim, t_philo *philo)
 {
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
-	int				philo_idx;
-	long long		now;
+	int	left;
+	int	right;
 
-	philo_idx = philo->id;
-	pthread_mutex_lock(&sim->fork);
-	left = &sim->forks[philo_idx];
-	right = &sim->forks[(philo_idx + 1) % sim->count];
-	now = time_now();
-	pthread_mutex_lock(right);
-	printf(TOOK_FORK, time_diff_ms(sim->start_time, now), philo->id + 1);
-	pthread_mutex_lock(left);
-	printf(TOOK_FORK, time_diff_ms(sim->start_time, now), philo->id + 1);
-	pthread_mutex_unlock(&sim->fork);
+	left = philo->id;
+	right = (philo->id + 1) % sim->count;
+	if (left > right)
+		ft_swap(&left, &right);
+	pthread_mutex_lock(&sim->forks[left]);
+	sim_print(sim, TOOK_FORK, philo->id);
+	pthread_mutex_lock(&sim->forks[right]);
+	sim_print(sim, TOOK_FORK, philo->id);
 	return (1);
 }
 
@@ -47,15 +43,15 @@ int	pick_up_forks(t_sim *sim, t_philo *philo)
  */
 void	release_forks(t_sim *sim, t_philo *philo)
 {
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
-	int				philo_idx;
+	int	left;
+	int	right;
 
-	philo_idx = philo->id;
-	right = &sim->forks[philo_idx];
-	left = &sim->forks[(philo_idx + 1) % sim->count];
-	pthread_mutex_unlock(right);
-	pthread_mutex_unlock(left);
+	left = philo->id;
+	right = (philo->id + 1) % sim->count;
+	if (left > right)
+		ft_swap(&left, &right);
+	pthread_mutex_unlock(&sim->forks[right]);
+	pthread_mutex_unlock(&sim->forks[left]);
 }
 
 void	destroy_fork_mutex(pthread_mutex_t *forks, int count)
@@ -64,10 +60,7 @@ void	destroy_fork_mutex(pthread_mutex_t *forks, int count)
 
 	i = 0;
 	while (i < count)
-	{
-		pthread_mutex_destroy(&forks[i]);
-		i++;
-	}
+		pthread_mutex_destroy(&forks[i++]);
 }
 
 int	alloc_forks(t_sim *sim)

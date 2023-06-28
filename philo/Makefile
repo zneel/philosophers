@@ -8,7 +8,8 @@ SRC=	src/main.c \
 		src/simulation.c \
 		src/routine.c \
 		src/actions.c \
-		src/time.c 
+		src/time.c \
+		src/utils.c
 
 OBJ=$(SRC:.c=.o)
 INCLUDE=-Iinclude
