@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/09 18:49:42 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:56:30 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,6 @@
 typedef struct timeval	t_timeval;
 typedef struct s_sim	t_sim;
 
-enum					e_state
-{
-	EAT,
-	SLEEP,
-	THINK,
-	DEAD,
-};
-
 typedef struct s_philo
 {
 	int					id;
@@ -53,9 +45,7 @@ typedef struct s_philo
 	int					dead;
 	int					eaten_count;
 	t_sim				*sim;
-	pthread_mutex_t		mutex;
 	pthread_mutex_t		lock;
-	enum e_state		state;
 }						t_philo;
 
 struct					s_sim
@@ -81,7 +71,6 @@ void					destroy_fork_mutex(pthread_mutex_t *forks, int count);
 
 int						alloc_philosophers(t_sim *sim);
 int						init_philosophers(t_sim *sim);
-int						is_dead(t_sim *sim, t_philo *philo);
 
 void					init_simulation(t_sim *philo);
 void					destroy_simulation(t_sim *philo);
@@ -92,6 +81,7 @@ void					debug_sim(t_sim *sim);
 void					debug_philo(t_philo *philo);
 void					sim_print(t_sim *sim, char *data, int id);
 void					ft_swap(int *a, int *b);
+int						sim_end(t_sim *sim);
 
 long long				time_to_ms(t_timeval time);
 long long				time_now(void);
@@ -99,7 +89,6 @@ int						sleep_ms(long long ms);
 long long				time_diff_ms(long long a, long long b);
 
 void					*p_routine(void *data);
-void					p_dead(t_sim *sim, t_philo *philo);
 void					p_eat(t_sim *sim, t_philo *philo);
 void					p_think(t_sim *sim, t_philo *philo);
 void					p_sleep(t_sim *sim, t_philo *philo);

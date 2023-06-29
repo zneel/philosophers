@@ -6,22 +6,11 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:27 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:14:23 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	is_dead(t_sim *sim, t_philo *philo)
-{
-	long long	now;
-
-	now = time_now();
-	if (philo->last_eat_at > 0 && time_diff_ms(philo->last_eat_at,
-			now) >= sim->time_to_die)
-		philo->dead = 1;
-	return (philo->dead);
-}
 
 void	assign_philosophers(t_sim *sim, t_philo *philo, int i)
 {
@@ -31,8 +20,6 @@ void	assign_philosophers(t_sim *sim, t_philo *philo, int i)
 	philo->ret = 0;
 	philo->dead = 0;
 	philo->sim = sim;
-	philo->state = THINK;
-	pthread_mutex_init(&philo->mutex, NULL);
 	pthread_mutex_init(&philo->lock, NULL);
 }
 
@@ -53,6 +40,8 @@ int	init_philosophers(t_sim *sim)
 	err = 0;
 	while (i < sim->count)
 	{
+		if (i % 2 == 0)
+			sleep_ms(2);
 		assign_philosophers(sim, &sim->philosophers[i], i);
 		sim->philosophers[i].ret = pthread_create(&sim->philosophers[i].thread,
 													NULL,

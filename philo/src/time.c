@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:14:08 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:32 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:33:51 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ long long	time_diff_ms(long long a, long long b)
 
 int	sleep_ms(long long ms)
 {
-	usleep(ms * 1000);
+	long long	start;
+
+	start = time_now();
+	while ((time_now() - start) < ms)
+		usleep(ms / 10);
 	return (1);
 }

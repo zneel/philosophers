@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:47:26 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:24 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 14:58:49 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ int	pick_up_forks(t_sim *sim, t_philo *philo)
 	if (left > right)
 		ft_swap(&left, &right);
 	pthread_mutex_lock(&sim->forks[left]);
-	sim_print(sim, TOOK_FORK, philo->id);
+	if (!sim_end(sim))
+		sim_print(sim, TOOK_FORK, philo->id);
 	pthread_mutex_lock(&sim->forks[right]);
-	sim_print(sim, TOOK_FORK, philo->id);
+	if (!sim_end(sim))
+		sim_print(sim, TOOK_FORK, philo->id);
 	return (1);
 }
 

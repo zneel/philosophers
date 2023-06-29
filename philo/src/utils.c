@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:13:53 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:33 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 14:50:29 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,19 @@ void	ft_swap(int *a, int *b)
 
 void	sim_print(t_sim *sim, char *data, int id)
 {
+	pthread_mutex_lock(&sim->print);
+	printf(data, time_diff_ms(sim->start_time, time_now()), id + 1);
+	pthread_mutex_unlock(&sim->print);
+}
+
+int	sim_end(t_sim *sim)
+{
 	pthread_mutex_lock(&sim->sim);
-	if (!sim->end)
+	if (sim->end)
 	{
 		pthread_mutex_unlock(&sim->sim);
-		pthread_mutex_lock(&sim->print);
-		printf(data, time_diff_ms(sim->start_time, time_now()), id + 1);
-		pthread_mutex_unlock(&sim->print);
+		return (1);
 	}
-	else
-	{
-		pthread_mutex_unlock(&sim->sim);
-	}
+	pthread_mutex_unlock(&sim->sim);
+	return (0);
 }

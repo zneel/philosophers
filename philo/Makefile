@@ -19,7 +19,7 @@ ifeq ($(SAN),1)
 endif
 
 ifeq ($(DEV),1)
-	CFLAGS += -fsanitize=address -g3 
+	CFLAGS += -g3 -fsanitize=thread
 endif
 
 ifeq ($(DEBUG),1)

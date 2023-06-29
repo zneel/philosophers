@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:22:03 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/28 21:47:24 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:56:37 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,6 @@ void	debug_sim(t_sim *sim)
 	printf("sim->must_eat_count=%d\n", sim->must_eat_count);
 }
 
-char	*state_to_str(enum e_state state)
-{
-	if (state == EAT)
-		return ("EATING");
-	else if (state == SLEEP)
-		return ("SLEEPING");
-	else if (state == DEAD)
-		return ("DEAD");
-	else if (state == THINK)
-		return ("THINKING");
-	return ("NO_STATE");
-}
-
 void	debug_philo(t_philo *philo)
 {
 	printf("=========================\n");
@@ -47,6 +34,5 @@ void	debug_philo(t_philo *philo)
 	printf("dead=%d\n", philo->dead);
 	printf("eaten_count=%d\n", philo->eaten_count);
 	printf("last_eat_at=%lld\n", philo->last_eat_at);
-	printf("state=%s\n", state_to_str(philo->state));
 	printf("=========================\n");
 }
