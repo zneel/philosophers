@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:14:08 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/29 15:33:51 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/30 09:48:51 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ int	sleep_ms(long long ms)
 
 	start = time_now();
 	while ((time_now() - start) < ms)
-		usleep(ms / 10);
+		usleep(ms * 1000);
 	return (1);
 }

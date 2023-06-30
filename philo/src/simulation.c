@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:49:46 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/29 15:45:55 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/06/30 23:20:25 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 void	init_simulation(t_sim *sim)
 {
-	sim->count = 0;
-	sim->must_eat_count = -1;
-	sim->time_to_die = 0;
-	sim->time_to_eat = 0;
-	sim->time_to_sleep = 0;
 	sim->philosophers = NULL;
 	sim->forks = NULL;
 	sim->start_time = time_now();
@@ -36,16 +31,38 @@ void	destroy_simulation(t_sim *sim)
 	pthread_mutex_destroy(&sim->print);
 }
 
-int	simulate(t_sim *sim)
+void	wait_for_threads(t_sim *sim)
 {
 	int	i;
 
 	i = 0;
-	alloc_philosophers(sim);
-	alloc_forks(sim);
-	init_forks(sim);
-	init_philosophers(sim);
 	while (i < sim->count)
-		pthread_join(sim->philosophers[i++].thread, NULL);
+	{
+		if (pthread_join(sim->philosophers[i].thread, NULL) != 0)
+			printf("Error joining thread\n");
+		i++;
+	}
+}
+
+int	simulate(t_sim *sim)
+{
+	init_simulation(sim);
+	if (!alloc_philosophers(sim))
+		return (1);
+	if (!alloc_forks(sim))
+		return (free(sim->philosophers), 1);
+	if (!init_forks(sim))
+		return (free(sim->forks), free(sim->philosophers), 1);
+	if (!init_philosophers(sim))
+	{
+		destroy_fork_mutex(sim->forks, sim->count);
+		free(sim->forks);
+		free(sim->philosophers);
+		pthread_mutex_destroy(&sim->sim);
+		pthread_mutex_destroy(&sim->print);
+		return (1);
+	}
+	wait_for_threads(sim);
+	destroy_simulation(sim);
 	return (0);
 }

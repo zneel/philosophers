@@ -6,13 +6,14 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/29 15:56:30 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/07/01 01:21:18 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include "libft.h"
 # include <errno.h>
 # include <pthread.h>
 # include <stdio.h>
@@ -64,8 +65,6 @@ struct					s_sim
 };
 
 int						alloc_forks(t_sim *sim);
-int						pick_up_forks(t_sim *sim, t_philo *philo);
-void					release_forks(t_sim *sim, t_philo *philo);
 int						init_forks(t_sim *sim);
 void					destroy_fork_mutex(pthread_mutex_t *forks, int count);
 
@@ -80,6 +79,7 @@ void					print_usage(void);
 void					debug_sim(t_sim *sim);
 void					debug_philo(t_philo *philo);
 void					sim_print(t_sim *sim, char *data, int id);
+void					print_dead(t_sim *sim, char *data, int id);
 void					ft_swap(int *a, int *b);
 int						sim_end(t_sim *sim);
 

@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/06/29 16:14:23 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/07/01 01:42:49 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	alloc_philosophers(t_sim *sim)
 	sim->philosophers = malloc(sizeof(t_philo) * sim->count);
 	if (!sim->philosophers)
 		return (0);
+	memset(sim->philosophers, 0, sizeof(t_philo) * sim->count);
 	return (1);
 }
 
@@ -40,13 +41,9 @@ int	init_philosophers(t_sim *sim)
 	err = 0;
 	while (i < sim->count)
 	{
-		if (i % 2 == 0)
-			sleep_ms(2);
 		assign_philosophers(sim, &sim->philosophers[i], i);
 		sim->philosophers[i].ret = pthread_create(&sim->philosophers[i].thread,
-													NULL,
-													&p_routine,
-													&sim->philosophers[i]);
+				NULL, &p_routine, &sim->philosophers[i]);
 		if (sim->philosophers[i].ret)
 		{
 			err = sim->philosophers[i].ret;
@@ -57,5 +54,5 @@ int	init_philosophers(t_sim *sim)
 	}
 	if (err)
 		free(sim->philosophers);
-	return (err);
+	return (err == 0);
 }

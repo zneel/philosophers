@@ -12,7 +12,9 @@ SRC=	src/main.c \
 		src/utils.c
 
 OBJ=$(SRC:.c=.o)
-INCLUDE=-Iinclude
+MMD=$(SRC:.c=.d)
+LIBRARY=libft/libft.a
+INCLUDE=-Iinclude -Ilibft/includes
 
 ifeq ($(SAN),1)
 	CFLAGS += -fsanitize=address 
@@ -29,11 +31,17 @@ endif
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 all: $(NAME)
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+
+$(LIBRARY):
+	$(MAKE) -j8 -C libft
+
+$(NAME): $(LIBRARY) $(OBJ) 
+	$(CC) $(CFLAGS) $(OBJ) $(LIBRARY) -o $(NAME)
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(MMD)
+	$(MAKE) -C libft clean
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C libft fclean
 re: fclean all
 .PHONY: all clean fclean re
