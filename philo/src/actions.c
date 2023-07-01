@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:47 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/07/01 01:35:11 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/07/01 12:15:08 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	p_eat(t_sim *sim, t_philo *philo)
 
 	left = philo->id;
 	right = (philo->id + 1) % sim->count;
-	if (left > right)
-		ft_swap(&left, &right);
 	pthread_mutex_lock(&sim->forks[left]);
 	sim_print(sim, TOOK_FORK, philo->id);
 	pthread_mutex_lock(&sim->forks[right]);

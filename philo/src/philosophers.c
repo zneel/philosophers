@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:21:39 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/07/01 01:42:49 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/07/01 12:13:08 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	assign_philosophers(t_sim *sim, t_philo *philo, int i)
 {
 	philo->eaten_count = 0;
 	philo->id = i;
-	philo->last_eat_at = 0;
+	philo->last_eat_at = sim->start_time;
 	philo->ret = 0;
 	philo->dead = 0;
 	philo->sim = sim;
@@ -43,7 +43,9 @@ int	init_philosophers(t_sim *sim)
 	{
 		assign_philosophers(sim, &sim->philosophers[i], i);
 		sim->philosophers[i].ret = pthread_create(&sim->philosophers[i].thread,
-				NULL, &p_routine, &sim->philosophers[i]);
+													NULL,
+													&p_routine,
+													&sim->philosophers[i]);
 		if (sim->philosophers[i].ret)
 		{
 			err = sim->philosophers[i].ret;

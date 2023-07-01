@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/07/01 01:41:09 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:23:43 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	*p_reaper(void *data)
 	{
 		if (check_dead(philo, sim))
 			break ;
-		sleep_ms(sim->time_to_die / 10);
+		usleep(200);
 	}
 	return (NULL);
 }
@@ -87,19 +87,18 @@ void	*p_routine(void *data)
 
 	sim = ((t_philo *)data)->sim;
 	philo = ((t_philo *)data);
+	if (philo->id % 2 != 0)
+		sleep_ms(sim->time_to_eat / 2);
 	if (sim->count == 1)
-	{
 		sim_print(sim, TOOK_FORK, philo->id);
-		sleep_ms(sim->time_to_die);
-	}
-	if (philo->id % 2 == 0)
-		sleep_ms(1);
 	pthread_create(&reaper_thread, NULL, &p_reaper, philo);
 	while (sim->count > 1 && !sim_end(sim) && !check_eaten_count(philo, sim))
 	{
 		p_eat(sim, philo);
 		p_sleep(sim, philo);
 		p_think(sim, philo);
+		if (sim->count % 2)
+			sleep_ms(sim->time_to_eat);
 	}
 	pthread_join(reaper_thread, NULL);
 	return (NULL);
