@@ -4,6 +4,7 @@ CFLAGS=-Wall -Wextra -Werror -pthread -MMD
 SRC=	src/main.c \
 		src/philosophers.c \
 		src/helpers.c \
+		src/checker.c \
 		src/forks.c \
 		src/simulation.c \
 		src/routine.c \
