@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/07/01 01:21:18 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:37:01 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <errno.h>
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -37,16 +38,23 @@
 typedef struct timeval	t_timeval;
 typedef struct s_sim	t_sim;
 
+typedef bool			t_bool;
+
 typedef struct s_philo
 {
 	int					id;
 	int					ret;
 	pthread_t			thread;
 	long long			last_eat_at;
-	int					dead;
+	t_bool				dead;
 	int					eaten_count;
+	int					must_eat_count;
 	t_sim				*sim;
-	pthread_mutex_t		lock;
+	t_bool				stop;
+	pthread_mutex_t		m_last_eat_at;
+	pthread_mutex_t		m_stop;
+	pthread_mutex_t		m_dead;
+	pthread_mutex_t		m_eaten_count;
 }						t_philo;
 
 struct					s_sim
@@ -55,13 +63,18 @@ struct					s_sim
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
+	pthread_t			t_check;
+	t_bool				all_eaten;
+	pthread_mutex_t		m_all_eaten;
 	int					must_eat_count;
-	pthread_mutex_t		sim;
-	pthread_mutex_t		print;
-	int					end;
+	pthread_mutex_t		m_eat_count;
+	pthread_mutex_t		m_print;
+	t_bool				end;
+	pthread_mutex_t		m_end;
 	long long			start_time;
 	t_philo				*philosophers;
 	pthread_mutex_t		*forks;
+	pthread_mutex_t		m_sim;
 };
 
 int						alloc_forks(t_sim *sim);
@@ -76,12 +89,15 @@ void					destroy_simulation(t_sim *philo);
 int						simulate(t_sim *sim);
 
 void					print_usage(void);
-void					debug_sim(t_sim *sim);
-void					debug_philo(t_philo *philo);
 void					sim_print(t_sim *sim, char *data, int id);
 void					print_dead(t_sim *sim, char *data, int id);
 void					ft_swap(int *a, int *b);
 int						sim_end(t_sim *sim);
+
+/**
+ * checker
+ */
+void					*p_check(void *data);
 
 long long				time_to_ms(t_timeval time);
 long long				time_now(void);
