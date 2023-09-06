@@ -1,16 +1,16 @@
-NAME=philo
+NAME=philo_bonus
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -pthread -MMD
-SRC=	src/main.c \
-		src/philosophers.c \
-		src/helpers.c \
-		src/checker.c \
-		src/forks.c \
-		src/simulation.c \
-		src/routine.c \
-		src/actions.c \
-		src/time.c \
-		src/utils.c
+SRC=	src/main_bonus.c \
+		src/philosophers_bonus.c \
+		src/helpers_bonus.c \
+		src/checker_bonus.c \
+		src/forks_bonus.c \
+		src/simulation_bonus.c \
+		src/routine_bonus.c \
+		src/actions_bonus.c \
+		src/time_bonus.c \
+		src/utils_bonus.c
 
 OBJ=$(SRC:.c=.o)
 MMD=$(SRC:.c=.d)
@@ -45,4 +45,5 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 re: fclean all
-.PHONY: all clean fclean re philo
+bonus: all
+.PHONY: all clean fclean re

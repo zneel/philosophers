@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   routine_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/06 12:43:54 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:35:14 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,18 @@ t_bool	has_eaten_enought(t_philo *philo)
 
 t_bool	should_stop(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->m_stop);
 	if (philo->stop)
-	{
-		pthread_mutex_unlock(&philo->m_stop);
 		return (true);
-	}
-	pthread_mutex_unlock(&philo->m_stop);
 	return (false);
 }
 
-void	*p_routine(void *data)
+void	*p_routine(t_sim *sim, t_philo *philo)
 {
-	t_sim	*sim;
-	t_philo	*philo;
-
-	sim = ((t_philo *)data)->sim;
-	philo = ((t_philo *)data);
+	sim_print(sim, THINKING, philo->id);
 	if (philo->id % 2 != 0)
 		sleep_ms(sim->time_to_eat / 2);
 	if (sim->count == 1)
-	{
 		sim_print(sim, TOOK_FORK, philo->id);
-		sleep_ms(sim->time_to_die);
-	}
-	if (philo->id % 2 == 0)
-		sleep_ms(1);
 	while (sim->count > 1 && !sim_end(sim) && !should_stop(philo))
 	{
 		p_eat(sim, philo);
