@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 09:27:31 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/06 17:34:38 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:02:33 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <pthread.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -57,6 +58,7 @@ typedef struct s_philo
 	int					must_eat_count;
 	t_sim				*sim;
 	t_bool				stop;
+	sem_t				*s_lock;
 }						t_philo;
 
 struct					s_sim
@@ -65,7 +67,6 @@ struct					s_sim
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	pthread_t			t_check;
 	t_bool				all_eaten;
 	int					must_eat_count;
 	t_bool				end;
@@ -94,12 +95,7 @@ void					print_usage(void);
 void					sim_print(t_sim *sim, char *data, int id);
 void					print_dead(t_sim *sim, char *data, int id);
 void					ft_swap(int *a, int *b);
-int						sim_end(t_sim *sim);
-
-/**
- * checker
- */
-void					*p_check(void *data);
+t_bool					sim_end(t_sim *sim);
 
 long long				time_to_ms(t_timeval time);
 long long				time_now(void);

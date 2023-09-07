@@ -1,16 +1,15 @@
 NAME=philo_bonus
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -pthread -MMD
-SRC=	src/main_bonus.c \
-		src/philosophers_bonus.c \
-		src/helpers_bonus.c \
-		src/checker_bonus.c \
-		src/forks_bonus.c \
-		src/simulation_bonus.c \
-		src/routine_bonus.c \
-		src/actions_bonus.c \
-		src/time_bonus.c \
-		src/utils_bonus.c
+SRC=	src/main.c \
+		src/philosophers.c \
+		src/helpers.c \
+		src/forks.c \
+		src/simulation.c \
+		src/routine.c \
+		src/actions.c \
+		src/time.c \
+		src/utils.c
 
 OBJ=$(SRC:.c=.o)
 MMD=$(SRC:.c=.d)

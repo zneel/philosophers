@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulation_bonus.c                                 :+:      :+:    :+:   */
+/*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 12:49:46 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/06 18:03:40 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:43:53 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	init_simulation(t_sim *sim)
 	sim->start_time = time_now();
 	sim->end = false;
 	sim->all_eaten = false;
-	sim->t_check = 0;
-	sim->s_forks = sem_open("s_forks", O_CREAT, 0644, sim->count);
 	sim->s_all_eaten = sem_open("s_all_eaten", O_CREAT, 0644, 1);
 	sim->s_eat_count = sem_open("s_eat_count", O_CREAT, 0644, 1);
 	sim->s_print = sem_open("s_print", O_CREAT, 0644, 1);
@@ -37,12 +35,22 @@ void	init_simulation(t_sim *sim)
 	sim->s_sim = sem_open("s_sim", O_CREAT, 0644, 1);
 	if (sim->s_all_eaten == SEM_FAILED || sim->s_eat_count == SEM_FAILED
 		|| sim->s_print == SEM_FAILED || sim->s_end == SEM_FAILED
-		|| sim->s_sim == SEM_FAILED || sim->s_forks == SEM_FAILED)
+		|| sim->s_sim == SEM_FAILED)
 	{
 		printf("Error creating semaphore\n");
 		clear_simulation();
 		exit(1);
 	}
+}
+
+void	clean_semaphores(void)
+{
+	sem_unlink("s_forks");
+	sem_unlink("s_print");
+	sem_unlink("s_sim");
+	sem_unlink("s_end");
+	sem_unlink("s_all_eaten");
+	sem_unlink("s_eat_count");
 }
 
 void	destroy_simulation(t_sim *sim)
@@ -76,14 +84,13 @@ void	wait_for_processes(t_sim *sim)
 	while (i < sim->count)
 	{
 		waitpid(-1, &status, 0);
-		if (status != 0)
-			i = 0;
 		i++;
 	}
 }
 
 int	simulate(t_sim *sim)
 {
+	clean_semaphores();
 	init_simulation(sim);
 	if (!alloc_philosophers(sim))
 		return (1);
@@ -95,7 +102,6 @@ int	simulate(t_sim *sim)
 		return (1);
 	}
 	wait_for_processes(sim);
-	pthread_join(sim->t_check, NULL);
 	destroy_simulation(sim);
 	return (0);
 }
