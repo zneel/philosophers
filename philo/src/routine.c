@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/06 12:43:54 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:54:17 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,45 @@ t_bool	should_stop(t_philo *philo)
 	return (false);
 }
 
+static int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
+static void	should_sleep(t_sim *sim, int tight)
+{
+	if (sim->count % 2 && (tight <= 10))
+		sleep_ms(sim->time_to_eat);
+	else if (sim->count % 2 == 0)
+		;
+	else
+		sleep_ms(sim->time_to_eat / 3);
+}
+
 void	*p_routine(void *data)
 {
 	t_sim	*sim;
 	t_philo	*philo;
+	int		tight;
 
 	sim = ((t_philo *)data)->sim;
 	philo = ((t_philo *)data);
-	if (philo->id % 2 != 0)
-		sleep_ms(sim->time_to_eat / 2);
+	tight = ft_abs(sim->time_to_die - sim->time_to_eat * sim->count);
+	if (philo->id % 2)
+		usleep(10000);
 	if (sim->count == 1)
 	{
 		sim_print(sim, TOOK_FORK, philo->id);
 		sleep_ms(sim->time_to_die);
 	}
-	if (philo->id % 2 == 0)
-		sleep_ms(1);
 	while (sim->count > 1 && !sim_end(sim) && !should_stop(philo))
 	{
 		p_eat(sim, philo);
 		p_sleep(sim, philo);
 		p_think(sim, philo);
-		if (sim->count % 2)
-			sleep_ms(sim->time_to_eat);
+		should_sleep(sim, tight);
 	}
 	return (NULL);
 }

@@ -45,4 +45,4 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 re: fclean all
-.PHONY: all clean fclean re philo
+.PHONY: all clean fclean re
