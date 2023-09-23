@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:39:51 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/05 15:38:36 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/23 11:18:20 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,44 +52,38 @@ void	all_full(t_sim *sim)
 	pthread_mutex_unlock(&sim->m_all_eaten);
 }
 
-void	check_death(t_sim *sim)
+void	check_n_quit(t_sim *sim, int i)
 {
-	int	i;
-	int	j;
-
-	while (!sim->all_eaten && !sim->end)
-	{
-		usleep(600);
-		i = -1;
-		j = 0;
-		while (++i < sim->count)
-		{
-			if (n_philo_full(sim, i))
-				j++;
-		}
-		if (j == sim->count)
-			all_full(sim);
-		i = 0;
-		while (i < sim->count)
-		{
-			if (is_philo_n_dead(sim, i))
-			{
-				print_dead(sim, DIED, i);
-				pthread_mutex_lock(&sim->m_end);
-				sim->end = true;
-				pthread_mutex_unlock(&sim->m_end);
-				break ;
-			}
-			i++;
-		}
-	}
+	pthread_mutex_lock(&sim->m_end);
+	sim->end = true;
+	pthread_mutex_unlock(&sim->m_end);
+	print_dead(sim, DIED, i);
 }
 
 void	*p_check(void *data)
 {
-	t_sim	*sim;
+	int	i;
+	int	j;
 
-	sim = (t_sim *)data;
-	check_death(sim);
+	while (!((t_sim *)data)->all_eaten && !((t_sim *)data)->end)
+	{
+		usleep(300);
+		i = -1;
+		j = 0;
+		while (++i < ((t_sim *)data)->count)
+		{
+			if (n_philo_full(((t_sim *)data), i))
+				j++;
+		}
+		if (j == ((t_sim *)data)->count)
+			all_full(((t_sim *)data));
+		i = 0;
+		while (i < ((t_sim *)data)->count)
+		{
+			if (is_philo_n_dead(((t_sim *)data), i))
+				return (check_n_quit(((t_sim *)data), i), NULL);
+			i++;
+		}
+	}
 	return (NULL);
 }
