@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:13:53 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/07 12:16:36 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:14:44 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,29 @@ void	ft_swap(int *a, int *b)
 
 void	print_dead(t_sim *sim, char *data, int id)
 {
-	pthread_mutex_lock(&sim->m_print);
+	sem_wait(sim->s_print);
 	printf(data, time_diff_ms(sim->start_time, time_now()), id + 1);
-	pthread_mutex_unlock(&sim->m_print);
+	sem_post(sim->s_print);
 }
 
 void	sim_print(t_sim *sim, char *data, int id)
 {
-	pthread_mutex_lock(&sim->m_end);
-	pthread_mutex_lock(&sim->m_print);
+	sem_wait(sim->s_end);
+	sem_wait(sim->s_print);
 	if (!sim->end)
-	{
 		printf(data, time_diff_ms(sim->start_time, time_now()), id + 1);
-	}
-	pthread_mutex_unlock(&sim->m_print);
-	pthread_mutex_unlock(&sim->m_end);
+	sem_post(sim->s_print);
+	sem_post(sim->s_end);
 }
 
-int	sim_end(t_sim *sim)
+t_bool	sim_end(t_sim *sim)
 {
-	pthread_mutex_lock(&sim->m_end);
+	sem_wait(sim->s_end);
 	if (sim->end)
 	{
-		pthread_mutex_unlock(&sim->m_end);
-		return (1);
+		sem_post(sim->s_end);
+		return (true);
 	}
-	pthread_mutex_unlock(&sim->m_end);
-	return (0);
+	sem_post(sim->s_end);
+	return (false);
 }

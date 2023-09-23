@@ -1,10 +1,9 @@
-NAME=philo
+NAME=philo_bonus
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -pthread -MMD
 SRC=	src/main.c \
 		src/philosophers.c \
 		src/helpers.c \
-		src/checker.c \
 		src/forks.c \
 		src/simulation.c \
 		src/routine.c \
@@ -45,4 +44,5 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 re: fclean all
+bonus: all
 .PHONY: all clean fclean re

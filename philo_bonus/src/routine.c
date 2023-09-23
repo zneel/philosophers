@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:22:40 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/07 12:54:17 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:54:29 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,56 @@ t_bool	has_eaten_enought(t_philo *philo)
 
 t_bool	should_stop(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->m_stop);
 	if (philo->stop)
-	{
-		pthread_mutex_unlock(&philo->m_stop);
 		return (true);
-	}
-	pthread_mutex_unlock(&philo->m_stop);
 	return (false);
 }
 
-static int	ft_abs(int n)
+void	*p_check(void *arg)
 {
-	if (n < 0)
-		return (-n);
-	return (n);
-}
+	t_philo		*philo;
+	long long	last_eat_at;
 
-static void	should_sleep(t_sim *sim, int tight)
-{
-	if (sim->count % 2 && (tight <= 10))
-		sleep_ms(sim->time_to_eat);
-	else if (sim->count % 2 == 0)
-		;
-	else
-		sleep_ms(sim->time_to_eat / 3);
-}
-
-void	*p_routine(void *data)
-{
-	t_sim	*sim;
-	t_philo	*philo;
-	int		tight;
-
-	sim = ((t_philo *)data)->sim;
-	philo = ((t_philo *)data);
-	tight = ft_abs(sim->time_to_die - sim->time_to_eat * sim->count);
-	if (philo->id % 2)
-		usleep(10000);
-	if (sim->count == 1)
+	philo = (t_philo *)arg;
+	while (true)
 	{
-		sim_print(sim, TOOK_FORK, philo->id);
-		sleep_ms(sim->time_to_die);
+		if (philo->sim->end || philo->stop)
+			return (NULL);
+		last_eat_at = time_diff_ms(time_now(), philo->last_eat_at);
+		if (last_eat_at >= philo->sim->time_to_die && !has_eaten_enought(philo))
+		{
+			sem_wait(philo->sim->s_end);
+			philo->sim->end = true;
+			philo->dead = true;
+			print_dead(philo->sim, DIED, philo->id);
+			sem_post(philo->sim->s_end);
+			return (NULL);
+		}
+		if (has_eaten_enought(philo))
+			return (NULL);
+		usleep(200);
 	}
-	while (sim->count > 1 && !sim_end(sim) && !should_stop(philo))
+	return (NULL);
+}
+
+void	*p_routine(t_sim *sim, t_philo *philo)
+{
+	pthread_t	t_check;
+
+	pthread_create(&t_check, NULL, p_check, philo);
+	if (philo->id % 2 != 0)
+		sleep_ms(sim->time_to_eat / 2);
+	if (sim->count == 1)
+		sim_print(sim, TOOK_FORK, philo->id);
+	while (!philo->dead && sim->count > 1 && !sim_end(sim)
+		&& !should_stop(philo))
 	{
 		p_eat(sim, philo);
 		p_sleep(sim, philo);
 		p_think(sim, philo);
-		should_sleep(sim, tight);
+		if (sim->count % 2)
+			sleep_ms(sim->time_to_eat);
 	}
+	pthread_join(t_check, NULL);
 	return (NULL);
 }
