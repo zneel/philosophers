@@ -6,7 +6,7 @@
 /*   By: ebouvier <ebouvier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:39:51 by ebouvier          #+#    #+#             */
-/*   Updated: 2023/09/23 11:19:48 by ebouvier         ###   ########.fr       */
+/*   Updated: 2023/09/23 11:20:48 by ebouvier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,35 +54,10 @@ void	all_full(t_sim *sim)
 
 void	check_n_quit(t_sim *sim, int i)
 {
-	int	i;
-	int	j;
-
-	while (!sim->all_eaten && !sim->end)
-	{
-		usleep(600);
-		i = -1;
-		j = 0;
-		while (++i < sim->count)
-		{
-			if (n_philo_full(sim, i))
-				j++;
-		}
-		if (j == sim->count)
-			all_full(sim);
-		i = 0;
-		while (i < sim->count)
-		{
-			if (is_philo_n_dead(sim, i))
-			{
-				pthread_mutex_lock(&sim->m_end);
-				sim->end = true;
-				pthread_mutex_unlock(&sim->m_end);
-				print_dead(sim, DIED, i);
-				break ;
-			}
-			i++;
-		}
-	}
+	pthread_mutex_lock(&sim->m_end);
+	sim->end = true;
+	pthread_mutex_unlock(&sim->m_end);
+	print_dead(sim, DIED, i);
 }
 
 void	*p_check(void *data)
